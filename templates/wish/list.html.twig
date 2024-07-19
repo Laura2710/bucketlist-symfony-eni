@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% if app.user %}
+        <section>
+            {% if is_granted('ROLE_ADMIN') %}
+                <h2>Gérer les souhaits</h2>
+            {% else %}
+                <h2>Mes idées</h2>
+            {% endif %}
+            <table>
+                <thead>
+                <tr>
+                    <th>Liste</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set hasWishes = false %}
+                {% for wish in wishes %}
+                    {% if wish.author == app.user.userIdentifier or is_granted('ROLE_ADMIN') %}
+                        {% set hasWishes = true %}
+                        <tr>
+                            <td><a title="detail idee"
+                                   href="{{ path('wish_detail', {'id': wish.id}) }}">{{ wish.title }}
+                                    [{{ wish.category.name }}]</a></td>
+                            <td>
+                                <div class="actions">
+                                    <a href="{{ path('wish_delete', {'id':wish.id}) }}"><img
+                                                src="{{ asset('img/remove.png') }}" alt="remove"></a>
+                                    <a href="{{ path('wish_update', {'id':wish.id}) }}"><img
+                                                src="{{ asset('img/edit.png') }}" alt="edit"></a>
+                                    <a title="detail idee" href="{{ path('wish_detail', {'id': wish.id}) }}"><img
+                                                src="{{ asset('img/link.png') }}" alt="voir le souhait"></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                {% if not hasWishes %}
+                    <tr>
+                        <td colspan="2">Pas d'idées pour le moment...</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </section>
+
+    {% endif %}
+
+    {% set otherPost = false %}
+    {% for wish in wishes %}
+        {% if app.user and app.user.userIdentifier != wish.author %}
+            {% set otherPost = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if otherPost == true %}
+        <section>
+            <h2>Inspire toi !</h2>
+            <ul>
+                {% for wish in wishes %}
+                    {% if app.user and app.user.userIdentifier != wish.author %}
+                        <li><a title="detail idee" href="{{ path('wish_detail', {'id': wish.id}) }}">{{ wish.title }}
+                                [{{ wish.category.name }}]</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    Liste d'idées
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Editer le souhait
+{% endblock %}
+
+{% block body %}
+    {{ form_start(wishForm) }}
+    {{ form_widget(wishForm) }}
+    <button>Mettre à jour</button>
+    {{ form_end(wishForm) }}
+{% endblock %}
+

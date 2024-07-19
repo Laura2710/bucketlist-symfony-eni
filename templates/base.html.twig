@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Bucket-List{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/normalize.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    <link rel="icon" href="{{ asset('img/favicon.png') }}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="top-header">
+            <h1><img src="{{ asset('img/logo.png') }}" alt="Bucket-List logo">Bucket-List</h1>
+            <nav>
+                {% if app.user %}
+                    <p>Hello {{ app.user.username }} !</p>
+                    <a href="{{ path('app_logout') }}" title="Logout">Deconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" title="Login">Login</a>
+                    <a href="{{ path('app_register') }}" title="Register">Inscription</a>
+                {% endif %}
+            </nav>
+        </div>
+
+        <nav>
+            {% if app.user %}
+            {% endif %}
+            <a href="{{ path('main_home') }}" title="Accueil BucketList">Home</a>
+            <a href="{{ path('main_about_us') }}" title="A propos de nous">About us</a>
+            <a href="{{ path('wish_list') }}" title="Liste d'idées">All Wishes</a>
+            {% if app.user %}
+            <a href="{{ path('wish_create') }}" title="Creer des idees">Add your idea</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<main><div class="container">{% block body %}{% endblock %}</div></main>
+<footer><div class="container">&copy; Bucket-List {{ "now" | date('Y') }}</div></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Ajouter une idée !
+{% endblock %}
+
+{% block body %}
+ <h2>Ajouter une idée</h2>
+
+    {{ form_start(wishForm) }}
+
+    {{ form_widget(wishForm) }}
+    <button>Enregistrer !</button>
+
+    {{ form_end(wishForm) }}
+
+{% endblock %}
+
